@@ -1,3 +1,8 @@
+/* This is a test macro for testing and debug TAIGAEvent class.
+*/
+
+// Author: Satyshev Ilyas. JINR
+
 void testEvent(Int_t rndIndex=0)
 {
   std::vector<TAIGAEvent> vectOfEvents;

@@ -1,3 +1,8 @@
+/* TAIGACamera class is an object for describing the camera detector in the TAIGA_IACT.
+*/
+
+// Author: Satyshev Ilyas. JINR
+
 #ifndef TAIGACamera_H
 #define TAIGACamera_H
 

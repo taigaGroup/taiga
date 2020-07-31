@@ -1,3 +1,7 @@
+/* This is a test macro for testing and debug TAIGACamera class.
+*/
+
+// Author: Satyshev Ilyas. JINR
 void testCamera()
 {
   TAIGACamera camera;

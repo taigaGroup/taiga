@@ -1,3 +1,8 @@
+/* TAIGACluster class is an object for describing clusters for the TAIGA_IACT camera.
+*/
+
+// Author: Satyshev Ilyas. JINR
+
 #ifndef TAIGACluster_H
 #define TAIGACluster_H
 

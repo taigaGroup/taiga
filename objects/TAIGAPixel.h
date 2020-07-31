@@ -1,3 +1,8 @@
+/* TAIGAPixel class is an object to describe a pixel from the TAIGA_IACT camera.
+*/
+
+// Author: Satyshev Ilyas. JINR
+
 #ifndef TAIGAPixel_H
 #define TAIGAPixel_H
 

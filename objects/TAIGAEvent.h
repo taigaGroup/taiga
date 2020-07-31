@@ -1,3 +1,8 @@
+/* TAIGAEvent class is an object for describing events for the TAIGA_IACT experiments.
+*/
+
+// Author: Satyshev Ilyas. JINR
+
 #ifndef TAIGAEvent_H
 #define TAIGAEvent_H
 
