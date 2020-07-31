@@ -14,11 +14,13 @@ TAIGAPixel::TAIGAPixel(const TAIGAPixel &pix) :
 }
 void TAIGAPixel::Print(TString opt) {
   if (opt == "") {
-    std::cout << "Set option trigg!" << std::endl;
+    std::cout << "NPixel: " << fNPixel << ", " << fXCor << ", " << fYCor << ", "
+              << fAmpl << ", " << fIsItTriggered << std::endl;
   }
   else if (opt == "trigg")
     if (fIsItTriggered)
-      std::cout << "fNPixel: " << fNPixel << ", " << fXCor << ", " << fYCor << ", " << fAmpl << ", " << fIsItTriggered << std::endl;
+      std::cout << "NPixel: " << fNPixel << ", " << fXCor << ", " << fYCor << ", "
+                << fAmpl << ", " << fIsItTriggered << std::endl;
 }
 
 ClassImp(TAIGAPixel);

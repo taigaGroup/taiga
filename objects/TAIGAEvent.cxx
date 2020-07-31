@@ -12,10 +12,16 @@ TAIGAEvent::~TAIGAEvent() {
 }
 void TAIGAEvent::Print(TString opt) {
   if (opt == "") {
-    std::cout << "Set option trigg!" << std::endl;
+    std::cout << "Event " << fNEvent << ", the number of triggered clusters is "
+                          << GetNumberOfTriggeredClusters() << std::endl;
+    for (Int_t ii = 0; ii < GetNumberOfTriggeredClusters(); ii++) {
+      fVectOfClusters[ii].Print();
+    }
+    std::cout << std::endl;
   }
   else if (opt == "trigg") {
-    std::cout << "Event " << fNEvent << ", the number of triggered clusters is " << GetNumberOfTriggeredClusters() << std::endl;
+    std::cout << "Event " << fNEvent << ", the number of triggered clusters is "
+                          << GetNumberOfTriggeredClusters() << std::endl;
     for (Int_t ii = 0; ii < GetNumberOfTriggeredClusters(); ii++) {
       fVectOfClusters[ii].Print(opt);
     }
