@@ -2,6 +2,7 @@
 #define TAIGACamera_H
 
 #include <vector>
+#include <utility> // std::pair, std::make_pair
 
 #include "TObject.h"
 

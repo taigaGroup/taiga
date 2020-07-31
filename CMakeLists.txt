@@ -41,25 +41,3 @@ add_subdirectory (objects)
 
 WRITE_CONFIG_FILE(config.sh)
 WRITE_CONFIG_FILE(config.csh)
-
-#Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
-#        DESTINATION bin
-#        RENAME TaigaRootConfig.sh
-#       )
-
-#Install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
-#       DESTINATION bin
-#       )
-
-#Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
-#        DESTINATION bin
-#        RENAME TaigaRootConfig.csh
-#       )
-
-#Install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
-#        DESTINATION bin
-#       )
-
-#Install(DIRECTORY cmake
-#        DESTINATION share/fairbase
-#        PATTERN ".svn" EXCLUDE)

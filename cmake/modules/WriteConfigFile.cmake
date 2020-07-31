@@ -1,10 +1,3 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
 MACRO (WRITE_CONFIG_FILE filename)
 
   String(REGEX REPLACE "^.*(install).*$" "\\1" INSTALL_VERSION ${filename})
@@ -20,7 +13,6 @@ MACRO (WRITE_CONFIG_FILE filename)
   Else (INSTALL_TRUE)
     SET(_INSTALLDIR ${CMAKE_BINARY_DIR})
     SET(_BINDIR ${CMAKE_BINARY_DIR})
-#    SET(VMCWORKDIR ${CMAKE_SOURCE_DIR})
     SET(TAIGALIBDIR ${CMAKE_BINARY_DIR}/lib)
     SET(_LD_LIBRARY_PATH ${TAIGALIBDIR} ${LD_LIBRARY_PATH})
   EndIf (INSTALL_TRUE)
@@ -32,10 +24,10 @@ MACRO (WRITE_CONFIG_FILE filename)
 
   IF(CMAKE_SYSTEM_NAME MATCHES Linux)
     IF(TAIGAROOTPATH)
-      configure_file(${TAIGAROOTPATH}/share/fairbase/cmake/scripts/check_system.sh.in
+      configure_file(${TAIGAROOTPATH}/share/cmake/scripts/check_system.sh.in
                      ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
                     )
-      configure_file(${TAIGAROOTPATH}/share/fairbase/cmake/scripts/check_system.csh.in
+      configure_file(${TAIGAROOTPATH}/share/cmake/scripts/check_system.csh.in
                      ${CMAKE_CURRENT_BINARY_DIR}/check_system.csh
                     )
     ELSE(TAIGAROOTPATH)
@@ -64,10 +56,10 @@ MACRO (WRITE_CONFIG_FILE filename)
 
   ElseIf(CMAKE_SYSTEM_NAME MATCHES Darwin)
     IF(TAIGAROOTPATH)
-      configure_file(${TAIGAROOTPATH}/share/fairbase/cmake/scripts/check_system_mac.sh.in
+      configure_file(${TAIGAROOTPATH}/share/cmake/scripts/check_system_mac.sh.in
                      ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
                     )
-      configure_file(${TAIGAROOTPATH}/share/fairbase/cmake/scripts/check_system_mac.csh.in
+      configure_file(${TAIGAROOTPATH}/share/cmake/scripts/check_system_mac.csh.in
                      ${CMAKE_CURRENT_BINARY_DIR}/check_system.csh
                     )
     ELSE(TAIGAROOTPATH)
@@ -117,11 +109,6 @@ MACRO (WRITE_CONFIG_FILE filename)
   CONVERT_LIST_TO_STRING(${PATH})
   Set(MY_PATH ${output})
 
-  If(FAIRSOFT_EXTERN)
-    Set(PYTHIA8DATA "${SIMPATH}/share/pythia8/xmldoc")
-  Else(FAIRSOFT_EXTERN)
-    Set(PYTHIA8DATA "${SIMPATH}/generators/pythia8/xmldoc")
-  EndIf(FAIRSOFT_EXTERN)
 
   CONVERT_LIST_TO_STRING($ENV{NEW_CLASSPATH})
   Set(MY_CLASSPATH ${output})
@@ -131,7 +118,7 @@ MACRO (WRITE_CONFIG_FILE filename)
 
   IF(${filename} MATCHES "[.]csh.*$")
     IF(TAIGAROOTPATH)
-    configure_file(${TAIGAROOTPATH}/share/fairbase/cmake/scripts/config.csh.in
+    configure_file(${TAIGAROOTPATH}/share/cmake/scripts/config.csh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
     ELSE(TAIGAROOTPATH)
@@ -143,7 +130,7 @@ MACRO (WRITE_CONFIG_FILE filename)
 
   ELSE(${filename} MATCHES "[.]csh.*$")
     IF(TAIGAROOTPATH)
-    configure_file(${TAIGAROOTPATH}/share/fairbase/cmake/scripts/config.sh.in
+    configure_file(${TAIGAROOTPATH}/share/cmake/scripts/config.sh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
     ELSE(TAIGAROOTPATH)

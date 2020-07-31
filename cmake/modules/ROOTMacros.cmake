@@ -1,10 +1,3 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
 Function(Format _output input prefix suffix)
 
 # DevNotes - input should be put in quotes or the complete list does not get passed to the function
@@ -146,7 +139,6 @@ MACRO (ROOT_GENERATE_DICTIONARY_OLD INFILES LINKDEF_FILE OUTFILE INCLUDE_DIRS_IN
 #  MESSAGE("INCLUDE_DIRS: ${INCLUDE_DIRS}")
 
   STRING(REGEX REPLACE "^(.*)\\.(.*)$" "\\1.h" bla "${OUTFILE}")
-#  MESSAGE("BLA: ${bla}")
   SET (OUTFILES ${OUTFILE} ${bla})
 
 
