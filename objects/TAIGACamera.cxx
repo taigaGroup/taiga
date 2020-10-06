@@ -15,16 +15,18 @@ TAIGACamera::~TAIGACamera() {
 }
 
 void TAIGACamera::Print() {
+  UInt_t shiftForNPixel(6), shiftForXcor(10), shiftForYcor(10), shiftForAmp(15), shiftForTrigg(15), shiftForNNeig(15);
   for (Int_t ii = 0; ii < NUMBER_OF_CLUSTERS; ii++) {
     std::cout << "Cluster " << fArrOfClusters[ii].GetNCluster() << std::endl;
-    std::cout << "NPixel" << setw(5) << "x" << setw(6) << "y " << setw(6) << "amp " << setw(7) << "trigg "
-         << setw(10) << "NNeighbers" << std::endl;
+    std::cout << "NPixel" << setw(shiftForXcor) << "x" << setw(shiftForYcor) << "y" << setw(shiftForAmp) << "amp"
+              << setw(shiftForTrigg) << "trigg" << setw(shiftForNNeig) << "NNeighbors" << std::endl;
     for (Int_t jj = 0; jj < NUMBER_OF_PIXELS; jj++) {
       TAIGAPixel curPixel=fArrOfClusters[ii].GetPixel(jj);
-      std::cout << setw(6) << curPixel.GetNPixel() << " " << setw(3) << curPixel.GetXcor() << " "
-           << setw(3) << curPixel.GetYcor() << " " << setw(5) << curPixel.GetAmp() << " "
-           << setw(6) << curPixel.IsItTriggered() << " "
-           << setw(10) << GetNumberOfPixelNeighbors(fArrOfClusters[ii].GetNCluster()-1, curPixel.GetNPixel()-1) << std::endl; // TODO why -1
+      std::cout << setw(shiftForNPixel) << curPixel.GetNPixel() << setw(shiftForXcor) << curPixel.GetXcor()
+           << setw(shiftForYcor) << curPixel.GetYcor() << setw(shiftForAmp) << curPixel.GetAmp()
+           << setw(shiftForTrigg) << curPixel.IsItTriggered()
+           << setw(shiftForNNeig) << GetNumberOfPixelNeighbors(fArrOfClusters[ii].GetNCluster()-1, curPixel.GetNPixel()-1) // TODO why -1
+           << std::endl;
     }
   }
 }
