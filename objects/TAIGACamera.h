@@ -6,6 +6,9 @@
 #ifndef TAIGACamera_H
 #define TAIGACamera_H
 
+#include <vector>
+#include <utility> // std::pair, std::make_pair
+
 #include "TObject.h"
 
 #include "TAIGACluster.h"
@@ -22,7 +25,7 @@ public:
 
   Bool_t are2PixelsNeighbors(Int_t NClr1, Int_t NClr2, Int_t NPix1, Int_t NPix2);
 
-  Int_t GetNumberOfPixelNeighbors(Int_t NClr, Int_t NPix);
+  Int_t GetNumberOfPixelNeighbors(Int_t NClr, Int_t NPix) const;
   /** Modifiers **/
   void SetPixelXcor(Double_t xcor, Int_t NClr, Int_t NPix);
   void SetPixelYcor(Double_t ycor, Int_t NClr, Int_t NPix);
@@ -36,6 +39,7 @@ public:
 
 private:
   TAIGACluster fArrOfClusters[NUMBER_OF_CLUSTERS];
+  std::vector<std::pair<Int_t, Int_t>> fArrOfVectOfNeighbors[NUMBER_OF_CLUSTERS*NUMBER_OF_PIXELS];
 
   ClassDef (TAIGACamera,0);
 };
