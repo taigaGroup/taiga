@@ -11,22 +11,20 @@ fNEvent(nev) {
 TAIGAEvent::~TAIGAEvent() {
 }
 void TAIGAEvent::Print(TString opt) {
-  if (opt == "") {
-    std::cout << "Event " << fNEvent << ", the number of triggered clusters is "
-                          << GetNumberOfTriggeredClusters() << std::endl;
-    for (Int_t ii = 0; ii < GetNumberOfTriggeredClusters(); ii++) {
-      fVectOfClusters[ii].Print();
+  std::cout << "In Event " << GetNEvent() << " nuber of triggered clusters is "
+            << GetNumberOfTriggeredClusters() << std::endl;
+  for (Int_t i=0; i<GetNumberOfTriggeredClusters(); i++) {
+    std::cout << "Cluster " << fVectOfClusters[i].GetNCluster() << std::endl;
+    Int_t counter=0;
+    for (Int_t ii=0; ii<8; ii++) {
+      for (Int_t iii=0; iii<8; iii++) {
+        counter++;
+        std::cout << fVectOfClusters[i].GetPixelAmp(counter) << " " << fVectOfClusters[i].IsPixelTriggered(counter) << " ";
+      }
+      std::cout << std::endl;
     }
-    std::cout << std::endl;
   }
-  else if (opt == "trigg") {
-    std::cout << "Event " << fNEvent << ", the number of triggered clusters is "
-                          << GetNumberOfTriggeredClusters() << std::endl;
-    for (Int_t ii = 0; ii < GetNumberOfTriggeredClusters(); ii++) {
-      fVectOfClusters[ii].Print(opt);
-    }
-    std::cout << std::endl;
-  }
+
 }
 void TAIGAEvent::AddCluster(TAIGACluster &clr) {
   fVectOfClusters.push_back(clr);

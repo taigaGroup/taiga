@@ -47,6 +47,12 @@ Double_t TAIGACluster::GetPixelXcor(Int_t NPix) const {
 Double_t TAIGACluster::GetPixelYcor(Int_t NPix) const  {
   return fArrOfPixels[NPix-1].GetYcor();
 }
+Double_t TAIGACluster::GetPixelAmp(Int_t NPix) const {
+  return fArrOfPixels[NPix-1].GetAmp();
+}
+Bool_t TAIGACluster::IsPixelTriggered(Int_t NPix) const {
+  return fArrOfPixels[NPix-1].IsItTriggered();
+}
 Int_t TAIGACluster::GetNumberOfTriggeredPixels() const {
   Int_t numberOfTriggPixs=0;
   for (Int_t ii = 0; ii < NUMBER_OF_PIXELS; ii++)

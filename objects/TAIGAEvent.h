@@ -25,6 +25,7 @@ public:
   void SetNEvent(Int_t nev) { fNEvent=nev; }
   void SetPixelAmp();
   /** Accessors **/
+  Int_t GetNEvent() const { return fNEvent; }
   Int_t GetNumberOfTriggeredClusters() const { return fVectOfClusters.size(); }
 
 private:

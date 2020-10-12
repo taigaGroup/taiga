@@ -29,8 +29,10 @@ public:
   Int_t GetNCluster() const { return fNCluster; }
   Double_t GetPixelXcor (Int_t NPix) const;
   Double_t GetPixelYcor(Int_t NPix) const;
+  Double_t GetPixelAmp(Int_t NPix) const;
   TAIGAPixel GetPixel(Int_t NPix) const { return fArrOfPixels[NPix]; }
   Int_t GetNumberOfTriggeredPixels() const;
+  Bool_t IsPixelTriggered(Int_t NPix) const;
 
 private:
   Int_t fNCluster=-1;

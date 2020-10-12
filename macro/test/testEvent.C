@@ -6,31 +6,47 @@
 void testEvent(Int_t rndIndex=0)
 {
   std::vector<TAIGAEvent> vectOfEvents;
-  gRandom->SetSeed(rndIndex);
-  Int_t NEvents=10;
 
-  for (Int_t ii = 0; ii < NEvents; ii++) {
+  ifstream fin("data/231119.out_005");
+  if (!fin.is_open()) {
+    cerr << "Can't read Input txt!" << endl;
+    return;
+  }
+
+
+  while (!fin.eof()) {
+    Int_t curNum;
+    fin >> curNum;
+    Int_t NumberOfTriggClrs = curNum;
     TAIGAEvent curEvent;
-    curEvent.SetNEvent(ii+1);
-    Int_t numberOfTriggClrs=gRandom->Integer(5)+1; // random integer [1-5]
-    cout << "Event: " << ii+1 << ", numberOfTriggClrs: " << numberOfTriggClrs << endl;
-    for (Int_t jj = 0; jj < numberOfTriggClrs; jj++) {
-      TAIGACluster curCluster;
-      Int_t NCurClr=gRandom->Integer(21)+1; // random integer [1-22]
-      curCluster.SetNCluster(NCurClr);
-      for (Int_t kk = 0; kk < NUMBER_OF_PIXELS; kk++) {
-        curCluster.SetPixelAmp(4., kk);
-        Double_t rnd=gRandom->Uniform(0., 1.);
-        if (rnd < 0.3)
-          curCluster.SetIsPixelTriggered(kTRUE, kk);
+    Int_t curNEvent;
+    for (Int_t i=0; i<NumberOfTriggClrs; i++) {
+      TAIGACluster curClr;
+      fin >> curNum;
+      Int_t curNClr = curNum;
+      curClr.SetNCluster(curNClr);
+      fin >> curNum;
+      curNEvent = curNum;
+      string timeStr;
+      fin >> timeStr;
+
+      for (Int_t j=0; j<NUMBER_OF_PIXELS; j++) {
+        fin >> curNum;
+        Double_t curAmp = (Double_t)curNum;
+        curClr.SetPixelAmp(curAmp, j+1);
+        fin >> curNum;
+        Bool_t curTriggValue = (Bool_t)curNum;
+        curClr.SetIsPixelTriggered(curTriggValue, j+1);
       }
-      curEvent.AddCluster(curCluster);
+      curEvent.AddCluster(curClr);
     }
+    curEvent.SetNEvent(curNEvent);
+    if (fin.eof()) break;
     vectOfEvents.push_back(curEvent);
   }
 
-  for (Int_t ii = 0; ii < vectOfEvents.size(); ii++) {
-    //vectOfEvents[ii].Print();
-    vectOfEvents[ii].Print("trigg");
+  cout << "NEvents is " << vectOfEvents.size() << endl;
+  for (Int_t i=0; i<vectOfEvents.size(); i++) {
+    vectOfEvents[i].Print();
   }
 }
