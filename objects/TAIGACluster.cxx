@@ -30,22 +30,22 @@ void TAIGACluster::Print(TString opt) {
   }
 }
 void TAIGACluster::SetPixelXcor(Double_t xcor, Int_t NPix) {
-  fArrOfPixels[NPix].SetXcor(xcor);
+  fArrOfPixels[NPix-1].SetXcor(xcor);
 }
 void TAIGACluster::SetPixelYcor(Double_t ycor, Int_t NPix) {
-  fArrOfPixels[NPix].SetYcor(ycor);
+  fArrOfPixels[NPix-1].SetYcor(ycor);
 }
 void TAIGACluster::SetPixelAmp(Double_t amp, Int_t NPix) {
-  fArrOfPixels[NPix].SetAmp(amp);
+  fArrOfPixels[NPix-1].SetAmp(amp);
 }
 void TAIGACluster::SetIsPixelTriggered(Bool_t mod, Int_t NPix) {
-  fArrOfPixels[NPix].SetIsPixelTriggered(mod);
+  fArrOfPixels[NPix-1].SetIsPixelTriggered(mod);
 }
 Double_t TAIGACluster::GetPixelXcor(Int_t NPix) const {
-  return fArrOfPixels[NPix].GetXcor();
+  return fArrOfPixels[NPix-1].GetXcor();
 }
 Double_t TAIGACluster::GetPixelYcor(Int_t NPix) const  {
-  return fArrOfPixels[NPix].GetYcor();
+  return fArrOfPixels[NPix-1].GetYcor();
 }
 Int_t TAIGACluster::GetNumberOfTriggeredPixels() const {
   Int_t numberOfTriggPixs=0;

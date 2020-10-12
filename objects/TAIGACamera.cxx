@@ -38,8 +38,13 @@ void TAIGACamera::PrintNeighborsInfo() {
   }
 }
 void TAIGACamera::AddPixelNeighbor(Int_t NClr1, Int_t NClr2, Int_t NPix1, Int_t NPix2) {
-  if (((NClr1-1)*NUMBER_OF_PIXELS+NPix1-1) > NUMBER_OF_CLUSTERS*NUMBER_OF_PIXELS) {
-    std::cerr << "Pixel with NClr=" << NClr1 << ", NPix=" << NPix1 << " doesn't exist!" << std::endl;
+  Int_t testNum = (NClr1-1)*NUMBER_OF_PIXELS+NPix1-1;
+  if (testNum > NUMBER_OF_CLUSTERS*NUMBER_OF_PIXELS && testNum < 0) {
+    std::cerr << "[ERROR]: Pixel with NClr=" << NClr1 << ", NPix=" << NPix1 << " doesn't exist!" << std::endl;
+    return;
+  }
+  if ((NClr1 == NClr2) && (NPix1 == NPix2)) {
+    std::cout << "[WARNING]: Don't compare pixel with It self!" << std::endl;
     return;
   }
   if (are2PixelsNeighbors(NClr1, NClr2, NPix1, NPix2)) return;
@@ -60,20 +65,20 @@ Int_t TAIGACamera::GetNumberOfPixelNeighbors(Int_t NClr, Int_t NPix) const {
   return fArrOfVectOfNeighbors[(NClr-1)*NUMBER_OF_PIXELS+NPix-1].size();
 }
 void TAIGACamera::SetPixelXcor(Double_t xcor, Int_t NClr, Int_t NPix) {
-  fArrOfClusters[NClr].SetPixelXcor(xcor, NPix);
+  fArrOfClusters[NClr-1].SetPixelXcor(xcor, NPix);
 }
 void TAIGACamera::SetPixelYcor(Double_t ycor, Int_t NClr, Int_t NPix) {
-  fArrOfClusters[NClr].SetPixelYcor(ycor, NPix);
+  fArrOfClusters[NClr-1].SetPixelYcor(ycor, NPix);
 }
 void TAIGACamera::SetPixelAmp(Double_t amp, Int_t NClr, Int_t NPix) {
-  fArrOfClusters[NClr].SetPixelAmp(amp, NPix);
+  fArrOfClusters[NClr-1].SetPixelAmp(amp, NPix);
 }
 void TAIGACamera::SetIsPixelTriggered(Bool_t mod, Int_t NClr, Int_t NPix) {
-  fArrOfClusters[NClr].SetIsPixelTriggered(mod, NPix);
+  fArrOfClusters[NClr-1].SetIsPixelTriggered(mod, NPix);
 }
 Double_t TAIGACamera::GetPixelXcor(Int_t NClr, Int_t NPix) {
-  return fArrOfClusters[NClr].GetPixelXcor(NPix);
+  return fArrOfClusters[NClr-1].GetPixelXcor(NPix);
 }
 Double_t TAIGACamera::GetPixelYcor(Int_t NClr, Int_t NPix) {
-  return fArrOfClusters[NClr].GetPixelYcor(NPix);
+  return fArrOfClusters[NClr-1].GetPixelYcor(NPix);
 }
