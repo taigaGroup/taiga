@@ -5,13 +5,15 @@ using std::setw;
 #include "TAIGACamera.h"
 
 TAIGACamera::TAIGACamera() {
+  fArrOfClusters = new TAIGACluster [NUMBER_OF_CLUSTERS];
   for (Int_t ii = 0; ii < NUMBER_OF_CLUSTERS; ii++) {
     fArrOfClusters[ii].SetNCluster(ii+1); // TODO Is first cluster has the number 1
   }
 }
 TAIGACamera::~TAIGACamera() {
-  for (Int_t ii = 0; ii < NUMBER_OF_CLUSTERS*NUMBER_OF_PIXELS; ii++)
+  for (Int_t ii=0; ii<NUMBER_OF_CLUSTERS*NUMBER_OF_PIXELS; ii++)
     fArrOfVectOfNeighbors[ii].clear();
+  if (fArrOfClusters) delete [] fArrOfClusters;
 }
 
 void TAIGACamera::Print() {
@@ -36,15 +38,16 @@ void TAIGACamera::PrintNeighborsInfo() {
   }
 }
 void TAIGACamera::AddPixelNeighbor(Int_t NClr1, Int_t NClr2, Int_t NPix1, Int_t NPix2) {
-  /*std::cout << "TAIGACamera::AddPixelNeighbor(" << NClr1 << ", " << NClr2 << ", "
-            << NPix1 << ", " << NPix2 << ")" << std::endl;*/
+  if (((NClr1-1)*NUMBER_OF_PIXELS+NPix1-1) > NUMBER_OF_CLUSTERS*NUMBER_OF_PIXELS) {
+    std::cerr << "Pixel with NClr=" << NClr1 << ", NPix=" << NPix1 << " doesn't exist!" << std::endl;
+    return;
+  }
   if (are2PixelsNeighbors(NClr1, NClr2, NPix1, NPix2)) return;
   fArrOfVectOfNeighbors[(NClr1-1)*NUMBER_OF_PIXELS+NPix1-1].push_back(std::make_pair(NClr2, NPix2));
 }
 
 Bool_t TAIGACamera::are2PixelsNeighbors(Int_t NClr1, Int_t NClr2, Int_t NPix1, Int_t NPix2) {
   if (GetNumberOfPixelNeighbors(NClr1, NPix1) < 1) return kFALSE;
-
   for (Int_t ii=0; ii<GetNumberOfPixelNeighbors(NClr1, NPix1);ii++) {
      Int_t curNClr=fArrOfVectOfNeighbors[(NClr1-1)*NUMBER_OF_PIXELS+NPix1-1][ii].first;
      Int_t curNPix=fArrOfVectOfNeighbors[(NClr1-1)*NUMBER_OF_PIXELS+NPix1-1][ii].second;

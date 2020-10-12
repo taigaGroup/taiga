@@ -38,7 +38,7 @@ public:
   TAIGAPixel GetPixel(Int_t NClr, Int_t NPix) const { return fArrOfClusters[NClr].GetPixel(NPix); }
 
 private:
-  TAIGACluster fArrOfClusters[NUMBER_OF_CLUSTERS];
+  TAIGACluster* fArrOfClusters;
   std::vector<std::pair<Int_t, Int_t>> fArrOfVectOfNeighbors[NUMBER_OF_CLUSTERS*NUMBER_OF_PIXELS];
 
   ClassDef (TAIGACamera,0);
