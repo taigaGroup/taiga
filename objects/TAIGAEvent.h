@@ -25,15 +25,20 @@ public:
   void SetNEvent(Int_t nev) { fNEvent=nev; }
   void SetPixelAmp();
   void IterAmp(Double_t amp) { fIntegralofAmp+=amp; }
+  void SetTime(TString time) { fTime=time; }
   /** Accessors **/
   Int_t GetNEvent() const { return fNEvent; }
-  TAIGACluster & GetCluster(Int_t iClr) { return fVectOfClusters[iClr]; }
-  Double_t GetIntegralofAmp() const { return fIntegralofAmp; }
   Int_t GetNumberOfTriggeredClusters() const { return fVectOfClusters.size(); }
+  Double_t GetIntegralofAmp() const { return fIntegralofAmp; }
 
+  TString GetTime() const { return fTime; }
+
+  TAIGACluster & GetCluster(Int_t iClr) { return fVectOfClusters[iClr]; }
 private:
   Int_t fNEvent=-1;
   Double_t fIntegralofAmp=0.;
+
+  TString fTime="";
 
   std::vector<TAIGACluster> fVectOfClusters;
 

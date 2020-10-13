@@ -29,6 +29,7 @@ void testEvent(Int_t rndIndex=0)
       curNEvent = curNum;
       string timeStr;
       fin >> timeStr;
+      curEvent.SetTime(timeStr);
 
       for (Int_t j=0; j<NUMBER_OF_PIXELS; j++) {
         fin >> curNum;
