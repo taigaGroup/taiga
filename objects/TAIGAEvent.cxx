@@ -12,7 +12,8 @@ TAIGAEvent::~TAIGAEvent() {
 }
 void TAIGAEvent::Print(TString opt) {
   std::cout << "In Event " << GetNEvent() << " nuber of triggered clusters is "
-            << GetNumberOfTriggeredClusters() << std::endl;
+            << GetNumberOfTriggeredClusters() << ", time: "
+            << GetTime() << std::endl;
   for (Int_t i=0; i<GetNumberOfTriggeredClusters(); i++) {
     std::cout << "Cluster " << fVectOfClusters[i].GetNCluster() << std::endl;
     Int_t counter=0;
