@@ -59,7 +59,7 @@ void Hillas() {
     Double_t u =1.+d/z;
     Double_t v = 2.-u;
     miss = sqrt(0.5*(u*mX*mX+v*mY*mY) - (2.*sigmaXY*mX*mY)/z );
-    alpha = asin(miss/distance);
+    alpha = asin(miss/distance)*TMath::RadToDeg();
     hillasTr->Fill();
   }
   hillasTr->StartViewer();
