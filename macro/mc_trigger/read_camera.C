@@ -6,6 +6,7 @@
 
 void read_input_txt_v1(TAIGACamera* camera);
 void read_input_txt_v2(TAIGACamera* camera);
+void add_neighbors_info(TAIGACamera* camera);
 // ----------------------------------------------------------------
 void read_camera(Bool_t txtVersion = kTRUE)
 {
@@ -13,7 +14,7 @@ void read_camera(Bool_t txtVersion = kTRUE)
   //txtVersion = kFALSE;
   (txtVersion) ? read_input_txt_v1(&camera) : read_input_txt_v2(&camera);
 
-  //camera.Print();
+  camera.Print();
 }
 
 // ----------------------------------------------------------------
@@ -26,7 +27,7 @@ void read_input_txt_v1(TAIGACamera* camera)
     cerr << "read_input_txt_v1()[ERROR]: Can't read input file!" << endl;
     return;
   }
-  Int_t counter = 0;
+  //Int_t counter = 0;
   // Loop over the files head. To skip It.
   while (!inputDataIn.eof()) {
     string testStr;
@@ -43,8 +44,13 @@ void read_input_txt_v1(TAIGACamera* camera)
     inputDataIn >> curNcl >> curNFeu >> curLen >> curXcm >> curYcm >> curNan >> curNdin >> curH;
     debug << curNcl << " " << curNFeu << " " << curLen<< " " << curXcm << " " << curYcm << " " << curNan << " "
           << curNdin << " " << curH << endl;
+    /*
     counter++;
     if (counter == 3) break;
+    */
+
+    camera->SetPixelXcor(curXcm, curNcl, curNFeu); // Xcor, NClaster, NPixel
+    camera->SetPixelXcor(curYcm, curNcl, curNFeu); // Xcor, NClaster, NPixel
   }
 }
 // ----------------------------------------------------------------
@@ -57,4 +63,7 @@ void read_input_txt_v2(TAIGACamera* camera)
     cerr << "read_input_txt_v2()[ERROR]: Can't read input file!" << endl;
     return;
   }
+  Int_t counter = 0;
+  // Loop over the files head. To skip It.
+
 }
