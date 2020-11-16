@@ -7,7 +7,7 @@ using std::setw;
 TAIGACamera::TAIGACamera() {
   fArrOfClusters = new TAIGACluster [NUMBER_OF_CLUSTERS];
   for (Int_t ii = 0; ii < NUMBER_OF_CLUSTERS; ii++) {
-    fArrOfClusters[ii].SetNCluster(ii+1); // TODO Is first cluster has the number 1
+    fArrOfClusters[ii].SetNCluster(ii+1); // TODO does the first cluster has the number 1
   }
 }
 TAIGACamera::~TAIGACamera() {

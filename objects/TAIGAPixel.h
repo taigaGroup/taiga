@@ -40,7 +40,7 @@ private:
   Int_t fNPixel=-1;
   Double_t fXCor=0.;
   Double_t fYCor=0.;
-  Double_t fAmpl=0.;
+  Double_t fAmpl=-1.;
   Bool_t fIsItTriggered=kFALSE;
 
   ClassDef (TAIGAPixel,1);

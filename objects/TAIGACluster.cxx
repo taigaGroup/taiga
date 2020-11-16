@@ -4,7 +4,7 @@
 
 TAIGACluster::TAIGACluster() {
   for (Int_t ii = 0; ii < NUMBER_OF_PIXELS; ii++) {
-    fArrOfPixels[ii].SetNPixel(ii+1); // TODO Is first pixel in the any cluster has the number 1
+    fArrOfPixels[ii].SetNPixel(ii+1); // TODO does the first pixel in a cluster has the number 1
   }
 }
 TAIGACluster::~TAIGACluster() {
