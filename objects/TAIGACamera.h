@@ -34,6 +34,7 @@ public:
   /** Accessors **/
   Double_t GetPixelXcor(Int_t NClr, Int_t NPix);
   Double_t GetPixelYcor(Int_t NClr, Int_t NPix);
+  Double_t GetPixelAmp (Int_t NClr, Int_t NPix);
   TAIGACluster GetCluster(Int_t NClr) const { return fArrOfClusters[NClr]; }
   TAIGAPixel GetPixel(Int_t NClr, Int_t NPix) const { return fArrOfClusters[NClr].GetPixel(NPix); }
 

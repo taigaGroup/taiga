@@ -82,3 +82,6 @@ Double_t TAIGACamera::GetPixelXcor(Int_t NClr, Int_t NPix) {
 Double_t TAIGACamera::GetPixelYcor(Int_t NClr, Int_t NPix) {
   return fArrOfClusters[NClr-1].GetPixelYcor(NPix);
 }
+Double_t TAIGACamera::GetPixelAmp(Int_t NClr, Int_t NPix) {
+  return fArrOfClusters[NClr-1].GetPixelAmp(NPix);
+}
