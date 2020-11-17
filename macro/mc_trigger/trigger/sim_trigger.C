@@ -1,6 +1,6 @@
 Int_t nBins=10;
 Double_t minBin=0.;
-Double_t maxBin=70.;
+Double_t maxBin=2.;
 struct headData
 {
   Double_t evId, particle, Energy, Xc, Yc, Theta_tel, Phi_tel, Theta, Phi, h_1int, nshower, nscat, nc, bpe;
@@ -30,11 +30,11 @@ void sim_trigger()
 
 
   Double_t thr=20.;
-  Int_t pix=4;
+  Int_t pix=10;
   sim(thr, pix);
 
   TCanvas* canv = new TCanvas("canv", "canv", 800, 1000);
-  canv->Divide(1, 3);
+  canv->Divide(1, 2);
   TH1D* baseEH = Get_Energy_Histo(vOfHeadData, "allE");
   Logy(baseEH);
   canv->cd(1);
@@ -49,17 +49,23 @@ void sim_trigger()
 
   TLegend* leg = new TLegend(1., 1., 0.80, 0.80);
   TH1D* ratio = Get_Ratio(baseEH, triggEH);
-  canv->cd(3);
-  ratio->Draw();
+  //canv->cd(3);
+  //ratio->Draw();
   ratio->SetLineWidth(4);
   ratio->SetLineColor(kRed);
+  ratio->SetStats(kFALSE);
   TString legName;
   legName.Form("thr=%d,pix=%d", (Int_t)thr, pix);
   leg->AddEntry(ratio, legName, "l");
-  leg->Draw();
+  //leg->Draw();
 
+  TCanvas* canv2 = new TCanvas("canv2", "canv2", 800, 1000);
+  canv2->cd(1);
+  ratio->Draw();
+  leg->Draw();
+  /*
   TFile* file = new TFile("out.root", "UPDATE");
-  canv->Write();
+  canv->Write();*/
 }
 
 // ----------------------------------------------------------
@@ -169,6 +175,7 @@ TH1D* Get_Energy_Histo(std::vector<headData> v, TString name)
   TH1D* histo = new TH1D(name, name, nBins, minBin, maxBin);
   for (UInt_t i=0; i<v.size(); i++) {
     Double_t curE = v[i].Energy;
+    curE = log10(curE);
     histo->Fill(curE);
   }
   return histo;
@@ -179,13 +186,11 @@ void sim(Double_t thr, Int_t pix)
   cout << "Before trigger number of events: " << GetNumberOfEvents(vOfCamEvData) << endl;
   UInt_t evId=1;
   UInt_t curPix=0;
-  Int_t trigCounter=0;
   for (UInt_t i=0; i<vOfCamEvData.size(); i++) {
     Int_t curEvId = vOfCamEvData[i].eid;
     if (curEvId != evId) {
       if (curPix > pix) {
-        vofTriggHeadData.push_back(vOfHeadData[trigCounter]);
-        trigCounter++;
+        vofTriggHeadData.push_back(vOfHeadData[evId]);
       }
       evId++;
       curPix=0;
@@ -200,7 +205,7 @@ void sim(Double_t thr, Int_t pix)
       //cout << i  << ": ";
       if (curPix > pix) {
         //cout << "yes!";
-        vofTriggHeadData.push_back(vOfHeadData[trigCounter]);
+        vofTriggHeadData.push_back(vOfHeadData[evId]);
       }
       //cout << endl;
     }
