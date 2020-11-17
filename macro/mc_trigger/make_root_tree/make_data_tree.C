@@ -13,8 +13,8 @@ void make_camera_events(TTree* tree);
 void make_data_tree()
 {
   TTree* headT = new TTree("header", "header");
-  //make_head(headT);
-  //headT->StartViewer();
+  make_head(headT);
+  headT->StartViewer();
 
   TTree* cameraEvT = new TTree("events", "events");
   make_camera_events(cameraEvT);
