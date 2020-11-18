@@ -1,3 +1,5 @@
+const Double_t XTel = 108.52; // [m]
+const Double_t YTel = -91.3; // [m]
 struct headData
 {
   Double_t evId, particle, Energy, Xc, Yc, Theta_tel, Phi_tel, Theta, Phi, h_1int, nshower, nscat, nc, bpe;
@@ -45,6 +47,12 @@ void make_head(TTree* tree)
 
   headData hData;
   tree->Branch("HEAD", &hData);
+  Double_t R;
+  Double_t XcNorm;
+  Double_t YcNorm;
+  tree->Branch("R", &R, "R/D");
+  tree->Branch("XcNorm", &XcNorm, "XcNorm/D");
+  tree->Branch("YcNorm", &YcNorm, "YcNorm/D");
 
   string str;
   fin >> str; // to skip head of the file
@@ -73,6 +81,12 @@ void make_head(TTree* tree)
         default : cerr << "[ERROR]: i can't be more than 13!" << endl; return;
       }
     }
+    Double_t curXc = hData.Xc;
+    Double_t curYc = hData.Yc;
+    XcNorm = curXc-XTel;
+    YcNorm = curYc-YTel;
+    R = sqrt(XcNorm*XcNorm + YcNorm*YcNorm);
+
     tree->Fill();
   }
   cout << "The end of make_head()" << endl;

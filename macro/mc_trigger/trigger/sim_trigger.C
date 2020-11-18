@@ -1,6 +1,6 @@
 Int_t nBins=10;
 Double_t minBin=0.;
-Double_t maxBin=2.;
+Double_t maxBin=70.;
 struct headData
 {
   Double_t evId, particle, Energy, Xc, Yc, Theta_tel, Phi_tel, Theta, Phi, h_1int, nshower, nscat, nc, bpe;
@@ -13,6 +13,8 @@ std::vector<headData> vOfHeadData;
 std::vector<headData> vofTriggHeadData;
 std::vector<cameraEvData> vOfCamEvData;
 
+void sim_single(Double_t thr, Int_t pix);
+void sim_mult();
 void read_head();
 void read_events_in_camera();
 void Logy(TH1D* hist);
@@ -21,57 +23,116 @@ Int_t GetNumberOfEvents(std::vector<cameraEvData> v);
 TH1D* Get_Energy_Histo(std::vector<headData> v, TString name);
 TH1D* Get_Ratio(TH1D* h1, TH1D* h2);
 // ---------------------------------------------------------
-void sim_trigger()
+void sim_trigger(Double_t thr=10., Int_t pix=6)
+{
+  //sim_single(thr, pix);
+  sim_mult();
+  //gPad->GetFrame()->SetLineWidth(5);
+}
+// ----------------------------------------------------------
+void sim_single(Double_t thr, Int_t pix)
 {
   read_head();
   cout << "NEntries in HEAD is " << vOfHeadData.size() << endl;
   read_events_in_camera();
   cout << "NEntriesIn in Camera Events is " << vOfCamEvData.size() << endl;
 
-
-  Double_t thr=20.;
-  Int_t pix=10;
   sim(thr, pix);
 
-  TCanvas* canv = new TCanvas("canv", "canv", 800, 1000);
-  canv->Divide(1, 2);
+  TCanvas* canv = new TCanvas("canv", "canv", 2000, 1000);
+  canv->Divide(3, 1);
   TH1D* baseEH = Get_Energy_Histo(vOfHeadData, "allE");
   Logy(baseEH);
   canv->cd(1);
   baseEH->Draw();
   baseEH->SetLineWidth(4);
+  baseEH->SetLineColor(kBlack);
+  baseEH->GetXaxis()->SetTitle("Energy [TeV]");
+  baseEH->GetYaxis()->SetTitle("log10(counts)");
 
   TH1D* triggEH = Get_Energy_Histo(vofTriggHeadData, "triggE");
   Logy(triggEH);
   canv->cd(2);
   triggEH->Draw();
   triggEH->SetLineWidth(4);
+  triggEH->GetXaxis()->SetTitle("Energy [TeV]");
+  triggEH->GetYaxis()->SetTitle("log10(counts)");
 
-  TLegend* leg = new TLegend(1., 1., 0.80, 0.80);
+  TLegend* leg = new TLegend(0.99, 0.9, 0.85, 0.8);
   TH1D* ratio = Get_Ratio(baseEH, triggEH);
-  //canv->cd(3);
+  canv->cd(3);
   //ratio->Draw();
   ratio->SetLineWidth(4);
   ratio->SetLineColor(kRed);
   ratio->SetStats(kFALSE);
+  ratio->GetXaxis()->SetTitle("Energy [TeV]");
+  ratio->GetYaxis()->SetTitle("Ntrigg / N0");
   TString legName;
   legName.Form("thr=%d,pix=%d", (Int_t)thr, pix);
   leg->AddEntry(ratio, legName, "l");
   //leg->Draw();
-
+/*
   TCanvas* canv2 = new TCanvas("canv2", "canv2", 800, 1000);
-  canv2->cd(1);
+  canv2->cd(1);*/
   ratio->Draw();
   leg->Draw();
   /*
   TFile* file = new TFile("out.root", "UPDATE");
   canv->Write();*/
 }
+// ----------------------------------------------------------
+void sim_mult()
+{
+  read_head();
+  cout << "NEntries in HEAD is " << vOfHeadData.size() << endl;
+  read_events_in_camera();
+  cout << "NEntriesIn in Camera Events is " << vOfCamEvData.size() << endl;
 
+  TLegend* leg = new TLegend(0.99, 0.9, 0.85, 0.1);
+  leg->Print();
+  TH1D* baseEH = Get_Energy_Histo(vOfHeadData, "allE");
+  Logy(baseEH);
+
+  Double_t curThr;
+  Int_t    curPix;
+  TCanvas* canv = new TCanvas("canv", "canv", 1500, 1000);
+  Int_t iCol=1;
+  while (true) {
+    cout << "[mult]: curThr="; cin >> curThr;
+    if (curThr > 99.) break;
+    cout << "[mult]: curPix="; cin >> curPix;
+    if (curPix > 99) break;
+    //curThr=5.; curPix=2;
+    sim(curThr, curPix);
+
+    TString curTriggHName;
+    curTriggHName.Form("triggE_%d_%d", (Int_t)curThr, curPix);
+    TH1D* triggEH = Get_Energy_Histo(vofTriggHeadData, curTriggHName);
+    Logy(triggEH);
+
+    TH1D* ratio = Get_Ratio(baseEH, triggEH);
+    ratio->SetLineWidth(4);
+    ratio->SetLineColor(iCol++);
+    ratio->SetStats(kFALSE);
+    ratio->GetXaxis()->SetTitle("Energy [TeV]");
+    ratio->GetYaxis()->SetTitle("Ntrigg / N0");
+    ratio->SetTitle("");
+
+    ratio->Draw("SAME");
+    TString legName;
+    legName.Form("thr=%d,pix=%d", (Int_t)curThr, curPix);
+    leg->AddEntry(ratio, legName, "l");
+  }
+  leg->SetLineWidth(3);
+  leg->Draw();
+  canv->SaveAs("canv.png");
+  return;
+}
 // ----------------------------------------------------------
 void read_head()
 {
   cout << "read_head() Processing..." << endl;
+  vOfHeadData.clear();
   ifstream fin("../input_data/mc_events_gamma_-1.csv");
   if (!fin.is_open()) {
     cerr << "Can't open input file!" << endl;
@@ -113,6 +174,7 @@ void read_head()
 void read_events_in_camera()
 {
   cout << "read_events_in_camera() Processing..." << endl;
+  vOfCamEvData.clear();
   ifstream fin("../input_data/camera_events_gamma_-1.csv");
   if (!fin.is_open()) {
     cerr << "Can't open input file!" << endl;
@@ -155,7 +217,6 @@ void Logy(TH1D* hist)
     else                    newBinContent = curBinContent;
     hist->SetBinContent(i, newBinContent);
   }
-
 }
 
 Int_t GetNumberOfEvents(std::vector<cameraEvData> v)
@@ -175,7 +236,7 @@ TH1D* Get_Energy_Histo(std::vector<headData> v, TString name)
   TH1D* histo = new TH1D(name, name, nBins, minBin, maxBin);
   for (UInt_t i=0; i<v.size(); i++) {
     Double_t curE = v[i].Energy;
-    curE = log10(curE);
+    //curE = log10(curE);
     histo->Fill(curE);
   }
   return histo;
@@ -183,14 +244,18 @@ TH1D* Get_Energy_Histo(std::vector<headData> v, TString name)
 
 void sim(Double_t thr, Int_t pix)
 {
+  cout << "sim(" << thr << ", " << pix << ") Processing..." << endl;
   cout << "Before trigger number of events: " << GetNumberOfEvents(vOfCamEvData) << endl;
+  vofTriggHeadData.clear();
   UInt_t evId=1;
   UInt_t curPix=0;
+  UInt_t counter=0;
   for (UInt_t i=0; i<vOfCamEvData.size(); i++) {
     Int_t curEvId = vOfCamEvData[i].eid;
     if (curEvId != evId) {
       if (curPix > pix) {
         vofTriggHeadData.push_back(vOfHeadData[evId]);
+        counter++;
       }
       evId++;
       curPix=0;
@@ -206,17 +271,19 @@ void sim(Double_t thr, Int_t pix)
       if (curPix > pix) {
         //cout << "yes!";
         vofTriggHeadData.push_back(vOfHeadData[evId]);
+        counter++;
       }
       //cout << endl;
     }
   }
+  cout << "After trigger number of events: " << counter+1 << endl;
 }
 
 TH1D* Get_Ratio(TH1D* h1, TH1D* h2)
 {
   TString ratioTitle;
   ratioTitle.Form("ratio_of_%s_/_%s", TString(h2->GetName()).Data(), TString(h1->GetName()).Data());
-  TH1D* ratio = new TH1D("ratio", ratioTitle, nBins, minBin, maxBin);
+  TH1D* ratio = new TH1D(ratioTitle, ratioTitle, nBins, minBin, maxBin);
   for (Int_t i=0; i<=nBins; i++) {
     Double_t E1= h1->GetBinContent(i);
     Double_t E2= h2->GetBinContent(i);
@@ -224,7 +291,7 @@ TH1D* Get_Ratio(TH1D* h1, TH1D* h2)
     if (E1 != 0) R = E2 / E1;
     else R = 0.;
     ratio->SetBinContent(i, R);
-    cout << "E1=" << E1 << ", E2=" << E2 << ", R=" << R << endl;
+    //cout << "E1=" << E1 << ", E2=" << E2 << ", R=" << R << endl;
   }
   return ratio;
 }
