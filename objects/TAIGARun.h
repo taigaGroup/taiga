@@ -30,7 +30,6 @@ public:
   TString GetPedsFileName  () { return pedsFileName; }
 
   void readCamera(TAIGACamera *camera);
-  void readCameraV2(TAIGACamera *camera);
   void readEvents(std::vector<TAIGAEvent> *vectOfEvents);
   void removePeds(std::vector<TAIGAEvent> *vectOfEvents);
 
