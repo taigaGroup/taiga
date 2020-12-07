@@ -18,29 +18,30 @@ class TAIGAEvent;
 class TAIGARun : public TObject
 {
 public:
-	TAIGARun();
-	~TAIGARun();
+  TAIGARun();
+  ~TAIGARun();
 
-	void SetCameraFileName(TString str) { cameraFileName=str; }
-	void SetEventsFileName(TString str) { eventsFileName=str; }
-	void SetPedsFileName  (TString str) { pedsFileNmae=str; }
+  void SetCameraFileName(TString str) { cameraFileName=str; }
+  void SetEventsFileName(TString str) { eventsFileName=str; }
+  void SetPedsFileName  (TString str) { pedsFileName=str; }
 
-	TString GetCameraFileName() { return cameraFileName; }
-	TString GetEventsFileName() { return eventsFileName; }
-	TString GetPedsFileName  () { return pedsFileNmae; }
-	
+  TString GetCameraFileName() { return cameraFileName; }
+  TString GetEventsFileName() { return eventsFileName; }
+  TString GetPedsFileName  () { return pedsFileName; }
+
   void readCamera(TAIGACamera *camera);
+  void readCameraV2(TAIGACamera *camera);
   void readEvents(std::vector<TAIGAEvent> *vectOfEvents);
   void removePeds(std::vector<TAIGAEvent> *vectOfEvents);
 
 private:
   TString cameraFileName="";
   TString eventsFileName="";
-  TString pedsFileNmae="";
+  TString pedsFileName="";
 
   Bool_t cameraReadStatus=kTRUE;
   Bool_t eventsReadStatus=kTRUE;
-  
+
 	ClassDef (TAIGARun,1);
 };
 

@@ -19,7 +19,7 @@ void TAIGARun::readCamera(TAIGACamera *camera) {
 	// Open input file with params of the camera
   std::ifstream inputDataIn(GetCameraFileName());
   if (!inputDataIn.is_open()) {
-    std::cerr << "read_input_txt_v1()[ERROR]: Can't read input file!" << std::endl;
+    std::cerr << "TAIGARun::readCamera [ERROR]: Can't read input file!" << std::endl;
     cameraReadStatus=kFALSE;
   }
 
@@ -31,7 +31,7 @@ void TAIGARun::readCamera(TAIGACamera *camera) {
   }
 
   if (inputDataIn.eof()) {
-    std::cerr << "read_input_txt_v1()[ERROR]: End of the file, stop flag wasn't found!" << std::endl;
+    std::cerr << "TAIGARun::readCamera [ERROR]: End of the file, stop flag wasn't found!" << std::endl;
     cameraReadStatus=kFALSE;
   }
 
@@ -47,14 +47,15 @@ void TAIGARun::readCamera(TAIGACamera *camera) {
     counter++;
   }
 }
-void TAIGARun::readEvents(std::vector<TAIGAEvent> *vectOfEvents) {  
+
+void TAIGARun::readEvents(std::vector<TAIGAEvent> *vectOfEvents) {
   std::ifstream fin(GetEventsFileName());
   if (!fin.is_open()) {
     std::cerr << "Can't read Input txt!" << std::endl;
     eventsReadStatus=kFALSE;
   }
-    
-  while (!fin.eof() && eventsReadStatus) {
+
+  while (!fin.eof()) {
     Int_t curNum;
     fin >> curNum;
     Int_t NumberOfTriggClrs = curNum;
@@ -68,13 +69,13 @@ void TAIGARun::readEvents(std::vector<TAIGAEvent> *vectOfEvents) {
       fin >> curNum;
       curNEvent = curNum;
       std::string timeStr;
-      fin >> timeStr;  
-      curEvent.SetTime(timeStr);
+      fin >> timeStr;
 
       for (Int_t j=0; j<NUMBER_OF_PIXELS; j++) {
         fin >> curNum;
         Double_t curAmp = (Double_t)curNum;
         curClr.SetPixelAmp(curAmp, j+1);
+        curEvent.IterAmp(curAmp);
         fin >> curNum;
         Bool_t curTriggValue = (Bool_t)curNum;
         curClr.SetIsPixelTriggered(curTriggValue, j+1);
