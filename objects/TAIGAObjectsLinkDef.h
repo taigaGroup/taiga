@@ -8,5 +8,6 @@
 #pragma link C++ class TAIGACluster;
 #pragma link C++ class TAIGAEvent;
 #pragma link C++ class TAIGACamera;
+#pragma link C++ class TAIGARun;
 
 #endif // __CINT__

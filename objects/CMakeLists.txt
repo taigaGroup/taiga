@@ -16,6 +16,7 @@ TAIGAPixel.cxx
 TAIGACluster.cxx
 TAIGAEvent.cxx
 TAIGACamera.cxx
+TAIGARun.cxx
 )
 
 # fill list of header files from list of source files
